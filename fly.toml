@@ -1,26 +1,22 @@
-# fly.toml app configuration file generated for tailwings on 2023-05-23T23:44:58+02:00
+# fly.toml app configuration file generated for tailscale-silow on 2023-09-19T15:04:42+05:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = "tailwings"
-primary_region = "nrt"
+app = "tailscale-silow"
+primary_region = "sin"
 kill_signal = "SIGINT"
 kill_timeout = "5s"
 
+[build]
+
 [env]
   PORT = "41641"
-  # create a reusable auth key and set it:
-  # flyctl secrets set TAILSCALE_AUTH_KEY=tskey-...
-  # ephemeral keys are hardly working for use as exit node as they are ipv6 only
 
 [[services]]
   protocol = "udp"
   internal_port = 41641
   processes = ["app"]
-
-  [[services.ports]]
-    port = 41641
   [services.concurrency]
     type = "connections"
     hard_limit = 100
