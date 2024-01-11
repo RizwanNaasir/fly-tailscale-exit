@@ -14,9 +14,13 @@ kill_timeout = "5s"
   PORT = "41641"
 
 [[services]]
-  protocol = "udp"
   internal_port = 41641
-  processes = ["app"]
+  protocol = "udp"
+
+  [[services.ports]]
+    handlers = ["tls", "http", "pg_tls"]
+    port = "41641"
+
   [services.concurrency]
     type = "connections"
     hard_limit = 100
