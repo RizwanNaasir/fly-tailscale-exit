@@ -1,15 +1,27 @@
-name: Fly Deploy
+name: Deploy to Fly.io
+
 on:
+  # Deploy on push to main
   push:
     branches:
       - main
+  # Weekly scheduled redeploy to pick up latest tailscale:stable image
+  schedule:
+    - cron: "0 0 * * 0" # Every Sunday at midnight UTC
+  # Allow manual trigger
+  workflow_dispatch:
+
 env:
   FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+
 jobs:
   deploy:
-    name: Deploy app
+    name: Deploy Tailscale Exit Node
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
+
       - uses: superfly/flyctl-actions/setup-flyctl@master
-      - run: flyctl deploy --strategy rolling
+
+      - name: Deploy to Fly.io (no Docker cache to pull latest tailscale:stable)
+        run: flyctl deploy --strategy immediate --no-cache
