@@ -23,5 +23,5 @@ jobs:
 
       - uses: superfly/flyctl-actions/setup-flyctl@master
 
-      - name: Deploy to Fly.io (no Docker cache to pull latest tailscale:stable)
-        run: flyctl deploy --strategy immediate --no-cache
+      - name: Deploy to Fly.io
+        run: flyctl deploy --strategy rolling
