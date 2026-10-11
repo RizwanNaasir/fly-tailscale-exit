@@ -13,6 +13,7 @@ ip6tables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
     --verbose=1 \
     --state=/var/lib/tailscale/tailscaled.state \
     --socket=/var/run/tailscale/tailscaled.sock &
+TAILSCALED_PID=$!
 
 sleep 2
 
@@ -23,4 +24,9 @@ sleep 2
     --advertise-tags=tag:fly-exit
 
 echo "Tailscale started. Let's go!"
-sleep infinity
+
+# Exit when tailscaled dies (e.g. OOM-killed) so Fly restarts the machine,
+# instead of idling forever with the exit node offline.
+wait $TAILSCALED_PID
+echo "tailscaled exited with code $?, shutting down"
+exit 1

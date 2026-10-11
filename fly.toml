@@ -10,6 +10,9 @@ kill_timeout = "5s"
   destination = "/var/lib/tailscale"
   initial_size = "1gb"
 
+[[restart]]
+  policy = "always"
+
 [[vm]]
   size = "shared-cpu-1x"
-  memory = "256mb"
+  memory = "512mb"
